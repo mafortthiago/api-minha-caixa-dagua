@@ -12,7 +12,12 @@ export class ReservatoriosService {
     private readonly reservatorioRepository: Repository<Reservatorio>,
   ) {}
 
-  create(createReservatorioDto: CreateReservatorioDto) {
+  async create(createReservatorioDto: CreateReservatorioDto) {
+    const existente = await this.reservatorioRepository.findOne({ where: {} });
+    if (existente) {
+      Object.assign(existente, createReservatorioDto);
+      return this.reservatorioRepository.save(existente);
+    }
     const reservatorio = this.reservatorioRepository.create(createReservatorioDto);
     return this.reservatorioRepository.save(reservatorio);
   }
