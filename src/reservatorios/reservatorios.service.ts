@@ -44,4 +44,16 @@ export class ReservatoriosService {
     const reservatorio = await this.findOne(id);
     return this.reservatorioRepository.remove(reservatorio);
   }
+
+  async setDistanciaCheio(id: number, valorCm: number) {
+    const reservatorio = await this.findOne(id);
+    reservatorio.distanciaCheioCm = valorCm;
+    return this.reservatorioRepository.save(reservatorio);
+  }
+
+  async setDistanciaVazio(id: number, valorCm: number) {
+    const reservatorio = await this.findOne(id);
+    reservatorio.distanciaVazioCm = valorCm;
+    return this.reservatorioRepository.save(reservatorio);
+  }
 }

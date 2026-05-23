@@ -10,5 +10,6 @@ import { MqttSubscriberService } from './mqtt-subscriber.service';
   imports: [TypeOrmModule.forFeature([Medicao, Reservatorio])],
   controllers: [MedicoesController],
   providers: [MedicoesService, MqttSubscriberService],
+  exports: [MqttSubscriberService],
 })
 export class MedicoesModule {}
