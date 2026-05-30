@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { connect, MqttClient } from 'mqtt';
 import { MedicaoPayload, MedicoesService } from './medicoes.service';
 import { Reservatorio } from '../reservatorios/entities/reservatorio.entity';
+import { decryptPayload } from '../crypto/payload-crypto';
 
 const TOPIC_DATA = process.env.MQTT_TOPIC_DATA ?? 'oriel_mafort/data';
 const TOPIC_CMD = process.env.MQTT_TOPIC_CMD ?? 'oriel_mafort/cmd';
@@ -70,7 +71,7 @@ export class MqttSubscriberService implements OnModuleInit, OnModuleDestroy {
     client.on('message', async (topic, message) => {
       try {
         if (topic === TOPIC_DATA) {
-          const payload: MedicaoPayload = JSON.parse(message.toString());
+          const payload = decryptPayload<MedicaoPayload>(message.toString());
           const salva = await this.medicoesService.registrar(
             this.reservatorioId,
             payload,
